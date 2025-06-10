@@ -93,3 +93,23 @@ search_btn = Button(search_frame, text="Search", font=("Arial", 12, "bold"),
                    bg="#ffffff", fg=ACCENT_COLOR, bd=0, command=getWeather)
 search_btn.pack(side=RIGHT, padx=15)
 
+# Main weather display
+main_frame = Frame(root, bg=BG_COLOR)
+main_frame.pack(pady=10, fill=BOTH)
+
+# City and time
+city_label = Label(main_frame, font=("Arial", 16, "bold"), bg="#ffffff", fg=TEXT_COLOR)
+city_label.pack(pady=(5, 15))
+
+time_label = Label(main_frame, font=("Arial", 14), bg=BG_COLOR, fg=SECONDARY_COLOR)
+time_label.pack()
+
+# Temperature display
+temp_frame = Frame(main_frame, bg=BG_COLOR)
+temp_frame.pack(pady=10)
+
+temp_label = Label(temp_frame, font=("Arial", 48, "bold"), bg=BG_COLOR, fg="#000000")
+temp_label.pack(side=RIGHT)
+
+condition_label = Label(temp_frame, font=("Arial", 14), bg=BG_COLOR, fg=SECONDARY_COLOR)
+condition_label.pack(side=LEFT, padx=5, pady=10)
