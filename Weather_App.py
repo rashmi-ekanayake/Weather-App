@@ -113,3 +113,27 @@ temp_label.pack(side=RIGHT)
 
 condition_label = Label(temp_frame, font=("Arial", 14), bg=BG_COLOR, fg=SECONDARY_COLOR)
 condition_label.pack(side=LEFT, padx=5, pady=10)
+
+# Weather cards
+cards_frame = Frame(root, bg=BG_COLOR)
+cards_frame.pack(pady=20, padx=20, fill=BOTH, expand=True)
+
+def create_card(parent, title):
+    card = Frame(parent, bg=CARD_COLOR, padx=15, pady=15, bd=1,  
+                highlightthickness=0, relief="ridge")
+    card.pack(side=LEFT, padx=10, fill=BOTH, expand=False) 
+    
+    Label(card, text=title, font=("Arial", 12, "bold"), bg=CARD_COLOR, fg=SECONDARY_COLOR).pack(anchor="w")
+    
+    value = Label(card, text="...", font=("Arial", 18), bg=CARD_COLOR, fg=TEXT_COLOR)  
+    value.pack(pady=5)
+    
+    Label(card, text=title.lower(), font=("Arial", 10), bg=CARD_COLOR, fg=SECONDARY_COLOR).pack(anchor="w")  
+    
+    return value
+
+# Create cards
+wind_card_value = create_card(cards_frame, "WIND")
+humidity_card_value = create_card(cards_frame, "HUMIDITY")
+conditions_card_value = create_card(cards_frame, "CONDITIONS")
+pressure_card_value = create_card(cards_frame, "PRESSURE")
