@@ -78,3 +78,18 @@ def getWeather():
 
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred:\n{str(e)}")
+
+
+# Search bar
+search_frame = Frame(root, bg=ACCENT_COLOR, height=60)
+search_frame.pack(fill=X, padx=20, pady=20)
+
+textfield = Entry(search_frame, font=("Arial", 16), bd=0, bg="#ffffff", fg=TEXT_COLOR)
+textfield.pack(side=LEFT, padx=15, pady=10, ipady=5, fill=X, expand=True)
+textfield.focus()
+textfield.bind("<Return>", lambda e: getWeather())
+
+search_btn = Button(search_frame, text="Search", font=("Arial", 12, "bold"), 
+                   bg="#ffffff", fg=ACCENT_COLOR, bd=0, command=getWeather)
+search_btn.pack(side=RIGHT, padx=15)
+
