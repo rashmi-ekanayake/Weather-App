@@ -1,15 +1,15 @@
 from tkinter import *
 import tkinter as tk
 
-
+# Initialize the root window
 root = Tk()
 root.title("Weather App")
 root.geometry("900x600+300+100")
-root.resizable(True, False)  
-root.configure(bg="#f5f7f")   
+root.resizable(False, False)  
+root.configure(bg="#f5f7fa")  
 
-
-BG_COLOR = "#f5f7f"            
+# Color scheme 
+BG_COLOR = "#f5f7fa"           
 CARD_COLOR = "#ffffff"
 ACCENT_COLOR = "#3a7bd"        
 TEXT_COLOR = "#333333"
