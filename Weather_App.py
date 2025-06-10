@@ -119,16 +119,16 @@ cards_frame = Frame(root, bg=BG_COLOR)
 cards_frame.pack(pady=20, padx=20, fill=BOTH, expand=True)
 
 def create_card(parent, title):
-    card = Frame(parent, bg=CARD_COLOR, padx=15, pady=15, bd=1,  
+    card = Frame(parent, bg=CARD_COLOR, padx=15, pady=15, bd=0, 
                 highlightthickness=0, relief="ridge")
-    card.pack(side=LEFT, padx=10, fill=BOTH, expand=False) 
+    card.pack(side=LEFT, padx=10, fill=BOTH, expand=True)
     
     Label(card, text=title, font=("Arial", 12, "bold"), bg=CARD_COLOR, fg=SECONDARY_COLOR).pack(anchor="w")
     
-    value = Label(card, text="...", font=("Arial", 18), bg=CARD_COLOR, fg=TEXT_COLOR)  
+    value = Label(card, text="...", font=("Arial", 20), bg=CARD_COLOR, fg=TEXT_COLOR)
     value.pack(pady=5)
     
-    Label(card, text=title.lower(), font=("Arial", 10), bg=CARD_COLOR, fg=SECONDARY_COLOR).pack(anchor="w")  
+    Label(card, text=title, font=("Arial", 10), bg=CARD_COLOR, fg=SECONDARY_COLOR).pack(anchor="w")
     
     return value
 
