@@ -137,3 +137,5 @@ wind_card_value = create_card(cards_frame, "WIND")
 humidity_card_value = create_card(cards_frame, "HUMIDITY")
 conditions_card_value = create_card(cards_frame, "CONDITIONS")
 pressure_card_value = create_card(cards_frame, "PRESSURE")
+
+root.mainloop()
