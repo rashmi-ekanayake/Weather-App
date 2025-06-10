@@ -19,58 +19,60 @@ from geopy.geocoders import Nominatim
 from tkinter import messagebox
 from timezonefinder import TimezoneFinder 
 from datetime import datetime
-import request  
+import requests
 import pytz
 
-def getweather(): 
-    city = textfield.get()  
-
-    if city == "":  
-        messagebox.showwarning("Alert", "City is missing!")  
+def getWeather():
+    city = textfield.get().strip()
+    
+    if not city:
+        messagebox.showerror("Error", "Please enter a city name!")
         return
 
     try:
-        locator = Nominatim(user_agent="my_app")  
-        location = locator.geocode(city)  
-
-        if location == None:  
-            messagebox.showinfo("Oops", "City not found")  
-
-        finder = TimezoneFinder()
-        zone = finder.timezone_at(lat=location.latitude, lng=location.longitude)
-        if zone is None:
-            zone = "UTC"
-
-        tz = pytz.timezone(zone)
-        now = datetime.now()  
-        date = now.strftime("%d-%m-%Y")  
-        time = now.strftime("%H:%M")     
-
-        time_label.config(text=f"{date} | {time}")
-        city_label.config(text=city.upper())  
-
-        # API request
-        key = "WRONG_KEY"  
-        url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={key}" 
-
-        data = request.get(url).json()  
-
-        if data["cod"] != 200:
-            messagebox.showerror("API Error", "No data for this location")  
+        geolocator = Nominatim(user_agent="weather_app")
+        location = geolocator.geocode(city, timeout=10)
+        
+        if not location:
+            messagebox.showerror("Error", "City not found!")
             return
 
-        cond = data["weather"][0]['main']
-        descr = data["weather"][0]["description"]
-        temp = data['main']['temp'] - 273 
-        feels = data['main']['feels_like'] - 273  
+        obj = TimezoneFinder()
+        result = obj.timezone_at(lng=location.longitude, lat=location.latitude) or "UTC"
+        
+        home = pytz.timezone(result)
+        local_time = datetime.now(home)
+        current_time = local_time.strftime("%I:%M %p")
+        current_date = local_time.strftime("%A, %B %d")
+        
+        time_label.config(text=f"{current_date} | {current_time}")
+        city_label.config(text=f"WEATHER IN {city.upper()}")
 
-        temp_label.config(txt=f"{int(temp)}°")  
-        condition_label.config(text=f"{cond} feels like {int(feels)}°C")
+        api_key = "7bdced1c832e8429224004be7d4e090c"
+        api = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
+        
+        response = requests.get(api, timeout=10)
+        json_data = response.json()
+        
+        if json_data.get("cod") != 200:
+            messagebox.showerror("Error", json_data.get("message", "Failed to fetch weather data"))
+            return
 
-        wind_card_value.set(data["wind"]["speed"])  
-        humidity_card_value.config(txt=f"{data['main']['humidity']}%")  
-        pressure_card_value.config(text=f"{data['main']['pressure']} hpa")  
-        conditions_card_value.config(text=descr.capitalize())
+        condition = json_data["weather"][0]['main']
+        description = json_data["weather"][0]["description"].capitalize()
+        temp_celsius = int(json_data['main']['temp'] - 273.15)
+        feels_like = int(json_data['main']['feels_like'] - 273.15)
+        
+        temp_label.config(text=f"{temp_celsius}°")
+        condition_label.config(text=f"{condition} | Feels like {feels_like}°C")
+        
+        wind_card_value.config(text=f"{json_data['wind']['speed']} m/s")
+        humidity_card_value.config(text=f"{json_data['main']['humidity']}%")
+        conditions_card_value.config(text=description)
+        pressure_card_value.config(text=f"{json_data['main']['pressure']} hPa")
+        
+        if "sattered" in description.lower():
+            conditions_card_value.config(text=description.replace("Sattered", "Scattered"))
 
-    except:
-        messagebox.showerror("Oops", "Something went wrong!") 
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred:\n{str(e)}")
