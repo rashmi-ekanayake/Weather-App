@@ -44,11 +44,11 @@ def getWeather():
         
         home = pytz.timezone(result)
         local_time = datetime.now(home)
-        current_time = local_time.strftime("%H:%M %p")
+        current_time = local_time.strftime("%I:%M %p")  # Fix 24h -> 12h format
         current_date = local_time.strftime("%A, %B %d")
         
         time_label.config(text=f"{current_date} | {current_time}")
-        city_label.config(text=f"Weather In {city.capitalize()}")
+        city_label.config(text=f"Weather in {city.capitalize()}")
 
         api_key = "7bdced1c832e8429224004be7d4e090c"
         api = f"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}"
@@ -68,13 +68,13 @@ def getWeather():
         temp_label.config(text=f"{temp_celsius}°C")
         condition_label.config(text=f"{condition} | Feels like {feels_like}°C")
         
-        wind_card_value.config(text=f"{json_data['wind']['speed']} mps")
+        wind_card_value.config(text=f"{json_data['wind']['speed']} m/s")  # corrected 'mps' to 'm/s'
         humidity_card_value.config(text=f"{json_data['main']['humidity']}%")
         conditions_card_value.config(text=description)
         pressure_card_value.config(text=f"{json_data['main']['pressure']} hPa")
         
-        if "scattered" in description.lower():
-            conditions_card_value.config(text=description.replace("Scattered", "Sattered"))
+        if "sattered" in description.lower():
+            conditions_card_value.config(text=description.replace("Sattered", "Scattered"))
 
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred:\n{str(e)}")
@@ -98,7 +98,7 @@ main_frame = Frame(root, bg=BG_COLOR)
 main_frame.pack(pady=10, fill=BOTH)
 
 # City and time
-city_label = Label(main_frame, font=("Arial", 16, "bold"), bg="#ffffff", fg=TEXT_COLOR)
+city_label = Label(main_frame, font=("Arial", 16, "bold"), bg=CARD_COLOR, fg=TEXT_COLOR)  # bg changed to CARD_COLOR (#ffffff)
 city_label.pack(pady=(5, 15))
 
 time_label = Label(main_frame, font=("Arial", 14), bg=BG_COLOR, fg=SECONDARY_COLOR)
